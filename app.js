@@ -6,8 +6,17 @@ const app = express();
 app.use(express.json());
 
 app.post('/sipsak', (req, res) => {
-  const { hostIp, hostPort = '5060' } = req.body;
-  const sipsak = spawn('sipsak', ['-O', 'pinger@sipsaker.com', '-s', `sip:${hostIp}:${hostPort}`]);
+  const { hostIp, hostPort = '5060', username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).send('Username and password are required');
+  }
+
+  const sipsak = spawn('sipsak', [
+    '-A', `${username}:${password}`,
+    '-O', 'pinger@sipsaker.com',
+    '-s', `sip:${hostIp}:${hostPort}`
+  ]);
 
   let output = '';
 
@@ -29,5 +38,6 @@ app.post('/sipsak', (req, res) => {
     }
   });
 });
+
 
 app.listen(3033, () => console.log('sipsaker started on port 3033'));
