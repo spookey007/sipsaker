@@ -15,8 +15,8 @@ RUN apt-get install -y curl && \
 # Install dependencies
 RUN npm install express
 
-# Expose port 3000 for the app
-EXPOSE 3000
+# Expose port 3033 for the app
+EXPOSE 3033
 
 # Start the app
 CMD ["node", "app.js"]
