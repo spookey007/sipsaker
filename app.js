@@ -5,6 +5,7 @@ const app = express();
 
 app.use(express.json());
 
+
 app.post('/sipsak', (req, res) => {
   const { hostIp, hostPort = '5060', username, password } = req.body;
 
@@ -13,8 +14,9 @@ app.post('/sipsak', (req, res) => {
   }
 
   const sipsak = spawn('sipsak', [
-    '-A', `${username}:${password}`,
-    '-O', 'pinger@sipsaker.com',
+    '-u', username,
+    '-a', password,
+    '-O', 'pinger@sipsaker.com', // Placeholder for the origin SIP URI
     '-s', `sip:${hostIp}:${hostPort}`
   ]);
 
@@ -38,6 +40,12 @@ app.post('/sipsak', (req, res) => {
     }
   });
 });
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
+
 
 
 app.listen(3033, () => console.log('sipsaker started on port 3033'));
